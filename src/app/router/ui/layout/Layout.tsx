@@ -41,7 +41,7 @@ export const Layout = () => {
     navigate(route);
   };
   return (
-    <AppShell footer={{ height: 90 }} header={{ height: 50 }} padding="md">
+    <AppShell footer={{ height: 70 }} header={{ height: 50 }} padding="md">
       <AppShell.Main pt={0} pl={0} pr={0} bg="#F6FAFC">
         <Outlet />
       </AppShell.Main>
@@ -63,7 +63,7 @@ export const Layout = () => {
               styles={{
                 label: {
                   display: "flex",
-                  fontSize: rem(14),
+                  fontSize: rem(10),
                   flexDirection: "column",
                   gap: rem(6),
                   alignItems: "center",

@@ -1,6 +1,5 @@
 import heroImg from "@assets/image 2.png";
 import {
-  ActionIcon,
   Box,
   Card,
   Checkbox,
@@ -11,14 +10,15 @@ import {
   Title,
 } from "@mantine/core";
 import { Carousel } from "@mantine/carousel";
-import {
-  AlarmClock,
-  Clock,
-  MessageCircle,
-  Octagon,
-  StarsIcon,
-} from "lucide-react";
+import { AlarmClock, MessageCircle, Octagon, StarsIcon } from "lucide-react";
+import { useUnit } from "effector-react";
+import { $currentUser, pageMounted } from "@/shared/state";
+import { useEffect } from "react";
+import WebApp from "@twa-dev/sdk";
+
 const Page = () => {
+  const [user] = useUnit([$currentUser]);
+  console.log(user);
   return (
     <Flex h="calc(100vh - 122px)" direction="column">
       <Box h="70%" pos="relative" style={{ overflow: "hidden" }}>
@@ -38,6 +38,8 @@ const Page = () => {
             <Title order={2} mb={40}>
               Easy Memorize Quran
             </Title>
+            {user?.telegramId}
+            {WebApp.initDataUnsafe?.user?.id}
             <Carousel
               slideSize="90%"
               align="start"
