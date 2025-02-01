@@ -8,5 +8,5 @@ export default defineConfig({
     host: true,
     port: 5180,
   },
-  plugins: [react(), basicSsl(), tsconfigPaths()],
+  plugins: [react(), tsconfigPaths()],
 });

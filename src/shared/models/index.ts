@@ -3,3 +3,9 @@ export interface User {
   telegramId: number;
   fullName: string;
 }
+
+export interface Surah {
+  id: number;
+  name: string;
+  ayahSize: number;
+}

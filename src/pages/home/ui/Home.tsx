@@ -118,13 +118,12 @@ const Page = () => {
                 <Flex gap={10} align="center">
                   <Octagon size={28} color="var(--mantine-color-teal-6)" />
                   <Flex direction="column">
-                    <Text>Al-Baqarah 10 - 50</Text>
+                    <Text>Al-Baqarah </Text>
                     <Text c="dimmed" size="xs">
                       Repeat after 15 minutes
                     </Text>
                   </Flex>
                 </Flex>
-                <Checkbox />
               </Flex>
             </Card>
           ))}

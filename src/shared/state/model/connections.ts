@@ -1,6 +1,6 @@
 import { sample } from "effector";
 import { appInitialized } from "./events";
-import { getUserFx } from "./effects";
+import { getAllSurahsFx, getUserFx, postUserFx } from "./effects";
 import { getTelegramId } from "./lib";
 import { $currentUser } from "./stores";
 
@@ -10,8 +10,26 @@ sample({
   fn: () => 970956519,
   target: getUserFx,
 });
-
 sample({
   clock: getUserFx.doneData,
   target: $currentUser,
+});
+
+//* If user not found, register him
+sample({
+  clock: getUserFx.done,
+  filter: (user) => !user.result.isExisting,
+  fn: (clock) => {
+    return { telegramId: clock.params, fullName: "New User" };
+  },
+  target: postUserFx,
+});
+sample({
+  clock: postUserFx.doneData,
+  target: $currentUser,
+});
+
+sample({
+  clock: appInitialized,
+  target: getAllSurahsFx,
 });
