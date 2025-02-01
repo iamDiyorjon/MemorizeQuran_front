@@ -1,4 +1,4 @@
-import { Surah, User } from "../models";
+import { Issue, Surah, User } from "../models";
 import { api } from "./_base";
 
 //* User Actions
@@ -22,5 +22,12 @@ export const postUser = async (body: any): Promise<User> => {
 //* Other API
 export const getAllSurahs = async (): Promise<Surah[]> => {
   const response = await api.get("/Surah/GeAllSurahs");
+  return response.data;
+};
+
+export const getAllIssues = async (userId: number): Promise<Issue[]> => {
+  const response = await api.get(
+    `/Issues/GetAllIssue?userId=${userId}&pageNumber=1&pageCount=10`
+  );
   return response.data;
 };

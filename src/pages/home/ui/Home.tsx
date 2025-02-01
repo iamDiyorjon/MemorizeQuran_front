@@ -12,13 +12,23 @@ import {
 import { Carousel } from "@mantine/carousel";
 import { AlarmClock, MessageCircle, Octagon, StarsIcon } from "lucide-react";
 import { useUnit } from "effector-react";
-import { $currentUser, pageMounted } from "@/shared/state";
+import {
+  $allIssues,
+  $allSurahs,
+  $currentUser,
+  $isLoading,
+  pageMounted,
+} from "@/shared/state";
 import { useEffect } from "react";
 import WebApp from "@twa-dev/sdk";
 
 const Page = () => {
-  const [user] = useUnit([$currentUser]);
-  console.log(user);
+  const [user, allIssues, allSurahs, isLoading] = useUnit([
+    $currentUser,
+    $allIssues,
+    $allSurahs,
+    $isLoading,
+  ]);
   return (
     <Flex h="calc(100vh - 122px)" direction="column">
       <Box h="70%" pos="relative" style={{ overflow: "hidden" }}>
@@ -112,21 +122,30 @@ const Page = () => {
           All Tasks
         </Title>
         <ScrollArea type="never" h="100%">
-          {Array.from({ length: 10 }).map((_, i) => (
-            <Card key={i} p={10} mb={10}>
-              <Flex align="center" justify="space-between">
-                <Flex gap={10} align="center">
-                  <Octagon size={28} color="var(--mantine-color-teal-6)" />
-                  <Flex direction="column">
-                    <Text>Al-Baqarah </Text>
-                    <Text c="dimmed" size="xs">
-                      Repeat after 15 minutes
-                    </Text>
+          {isLoading ? (
+            <Flex h="100%" justify="center" align="center">
+              <Text>Loading...</Text>
+            </Flex>
+          ) : (
+            <Flex direction="column" gap={10}>
+              {allIssues.map((issue) => (
+                <Card key={issue.id} p={10} mb={10}>
+                  <Flex align="center" justify="space-between">
+                    <Flex gap={10} align="center">
+                      <Octagon size={28} color="var(--mantine-color-teal-6)" />
+                      <Flex direction="column">
+                        <Text>{allSurahs[issue.surahId - 1]?.name}</Text>
+                        <Text c="dimmed" size="xs">
+                          Repeat after 15 minutes
+                        </Text>
+                      </Flex>
+                    </Flex>
+                    {issue.from} - {issue.to}
                   </Flex>
-                </Flex>
-              </Flex>
-            </Card>
-          ))}
+                </Card>
+              ))}
+            </Flex>
+          )}
         </ScrollArea>
       </Box>
     </Flex>

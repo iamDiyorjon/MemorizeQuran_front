@@ -1,8 +1,13 @@
 import { sample } from "effector";
 import { appInitialized } from "./events";
-import { getAllSurahsFx, getUserFx, postUserFx } from "./effects";
+import {
+  getAllIssuesFx,
+  getAllSurahsFx,
+  getUserFx,
+  postUserFx,
+} from "./effects";
 import { getTelegramId } from "./lib";
-import { $currentUser } from "./stores";
+import { $allIssues, $allSurahs, $currentUser } from "./stores";
 
 //* App Initialization
 sample({
@@ -32,4 +37,21 @@ sample({
 sample({
   clock: appInitialized,
   target: getAllSurahsFx,
+});
+
+sample({
+  clock: getAllSurahsFx.doneData,
+  target: $allSurahs,
+});
+
+sample({
+  clock: [getUserFx.doneData, postUserFx.doneData],
+  filter: (c) => c.isExisting,
+  fn: (c) => c.userId,
+  target: getAllIssuesFx,
+});
+
+sample({
+  clock: getAllIssuesFx.doneData,
+  target: $allIssues,
 });

@@ -1,4 +1,4 @@
-import { getAllSurahs, getUser, postUser } from "@/shared/api";
+import { getAllIssues, getAllSurahs, getUser, postUser } from "@/shared/api";
 import { createEffect } from "effector";
 
 export const getUserFx = createEffect((id: number) => {
@@ -12,4 +12,8 @@ export const postUserFx = createEffect((body: any) => {
 //* Other effects
 export const getAllSurahsFx = createEffect(() => {
   return getAllSurahs();
+});
+
+export const getAllIssuesFx = createEffect((userId: number) => {
+  return getAllIssues(userId);
 });
