@@ -10,7 +10,7 @@ import {
   Title,
 } from "@mantine/core";
 import { Carousel } from "@mantine/carousel";
-import { AlarmClock, MessageCircle, Octagon, StarsIcon } from "lucide-react";
+// import { AlarmClock, MessageCircle, Octagon, StarsIcon } from "lucide-react";
 import { useUnit } from "effector-react";
 import {
   $allIssues,
@@ -81,7 +81,7 @@ const Page = () => {
                 align="center"
                 justify="center"
               >
-                <AlarmClock size={32} color="#E7BFEE" />
+                {/* <AlarmClock size={32} color="#E7BFEE" /> */}
                 <Text c="dimmed" size="sm" fw={500}>
                   Reminder
                 </Text>
@@ -94,7 +94,7 @@ const Page = () => {
                 align="center"
                 justify="center"
               >
-                <MessageCircle size={32} color="#B7D5F3" />
+                {/* <MessageCircle size={32} color="#B7D5F3" /> */}
                 <Text c="dimmed" size="sm" fw={500}>
                   Q&A
                 </Text>
@@ -107,7 +107,7 @@ const Page = () => {
                 align="center"
                 justify="center"
               >
-                <StarsIcon size={32} color="var(--mantine-color-green-2)" />
+                {/* <StarsIcon size={32} color="var(--mantine-color-green-2)" /> */}
                 <Text c="dimmed" size="sm" fw={500}>
                   Zikr
                 </Text>
@@ -132,7 +132,7 @@ const Page = () => {
                 <Card key={issue.id} p={10} mb={10}>
                   <Flex align="center" justify="space-between">
                     <Flex gap={10} align="center">
-                      <Octagon size={28} color="var(--mantine-color-teal-6)" />
+                      {/* <Octagon size={28} color="var(--mantine-color-teal-6)" /> */}
                       <Flex direction="column">
                         <Text>{allSurahs[issue.surahId - 1]?.name}</Text>
                         <Text c="dimmed" size="xs">

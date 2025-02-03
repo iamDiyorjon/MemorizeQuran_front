@@ -22,3 +22,14 @@ export interface Issue {
   surahId: number;
   learnTypeId: number;
 }
+
+export interface PostIssue {
+  learnTypeId: number;
+  surahId: number;
+  from: number;
+  to: number;
+  dateLearned: string;
+  durationMinutes: number;
+  repetitionCount: number;
+  userId: number;
+}
