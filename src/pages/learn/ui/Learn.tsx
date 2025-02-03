@@ -1,11 +1,26 @@
-import { ActionIcon, Button, Checkbox, Flex, Select } from "@mantine/core";
+import { Surah } from "@/shared/models";
+import { $allSurahs } from "@/shared/state";
+import {
+  ActionIcon,
+  Button,
+  Checkbox,
+  ComboboxItem,
+  Flex,
+  Select,
+} from "@mantine/core";
 import { DateInput, TimeInput } from "@mantine/dates";
+import { useUnit } from "effector-react";
 import { Clock } from "lucide-react";
 import { useRef, useState } from "react";
+
+interface SelectedSurah extends Surah, ComboboxItem {}
+
 const Page = () => {
   const ref = useRef<HTMLInputElement>(null);
-
+  const [allSurahs] = useUnit([$allSurahs]);
+  const [selectedSurah, setSelectedSurah] = useState<SelectedSurah>();
   const [learnBy, setLearnBy] = useState<"Pages" | "Surah" | "">("");
+
   const [from, setFrom] = useState<string[]>(
     Array.from({ length: 114 }, (_, i) => (i + 1).toString())
   );
@@ -30,6 +45,26 @@ const Page = () => {
       setToValue(value);
     }
   };
+
+  const handleSurahSelection = (surah: ComboboxItem) => {
+    console.log(surah);
+    setSelectedSurah(surah);
+  };
+  const handleLearnBy = (value: string) => {
+    if (value === "Surah") {
+      setTo([]);
+      setFrom([]);
+      setFromValue("");
+      setToValue("");
+    }
+    if (value === "Pages") {
+      setFrom(Array.from({ length: 114 }, (_, i) => (i + 1).toString()));
+      setTo([]);
+      setFromValue("");
+      setToValue("");
+    }
+    setLearnBy(value);
+  };
   const pickerControl = (
     <ActionIcon
       variant="subtle"
@@ -51,9 +86,18 @@ const Page = () => {
         <Select
           label="Learn by"
           placeholder="Pick value"
-          data={["Pages", "Surah"]}
+          data={[
+            {
+              value: "Pages",
+              label: "Pages",
+            },
+            {
+              value: "Surah",
+              label: "Surah",
+            },
+          ]}
           value={learnBy}
-          onChange={(value) => setLearnBy(value as any)}
+          onChange={(value) => handleLearnBy(value as any)}
           onClear={() => setLearnBy("")}
           clearable
           w="100%"
@@ -62,8 +106,17 @@ const Page = () => {
           <Select
             label="Sura"
             placeholder="Pick sura"
-            data={["Surah Al-Fatihah", "Surah Al-Baqarah"]}
+            data={
+              allSurahs &&
+              allSurahs.map((surah) => ({
+                value: surah.id.toString(),
+                label: surah.name,
+                ...surah,
+              }))
+            }
+            onChange={(e, r) => handleSurahSelection(r)}
             clearable
+            searchable
             w="100%"
           />
         )}
