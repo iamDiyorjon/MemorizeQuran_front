@@ -25,7 +25,7 @@ export interface Issue {
 
 export interface PostIssue {
   learnTypeId: number;
-  surahId: number;
+  surahId: number | null;
   from: number;
   to: number;
   dateLearned: string;

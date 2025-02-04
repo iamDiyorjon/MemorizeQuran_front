@@ -1,4 +1,4 @@
-import { Issue, Surah, User } from "../models";
+import { Issue, PostIssue, Surah, User } from "../models";
 import { api } from "./_base";
 
 //* User Actions
@@ -25,9 +25,14 @@ export const getAllSurahs = async (): Promise<Surah[]> => {
   return response.data;
 };
 
+//* Issue Actions
 export const getAllIssues = async (userId: number): Promise<Issue[]> => {
   const response = await api.get(
     `/Issues/GetAllIssue?userId=${userId}&pageNumber=1&pageCount=10`
   );
+  return response.data;
+};
+export const createIssue = async (body: PostIssue): Promise<void> => {
+  const response = await api.post("/Issues/CreateIssue", body);
   return response.data;
 };
