@@ -128,15 +128,9 @@ const Page = () => {
   );
 
   return (
-    <Flex
-      w="100%"
-      h="calc(100vh - 200px)"
-      direction="column"
-      justify="center"
-      align="center"
-    >
+    <Flex w="100%" h="100%" direction="column" justify="center" align="center">
       <form style={{ width: "85%" }} onSubmit={form.onSubmit(handleCreateTask)}>
-        <Flex mt={70} direction="column" gap={15} w="100%">
+        <Flex direction="column" gap={15} w="100%">
           <Select
             {...form.getInputProps("learnTypeId")}
             label="Learn by"
@@ -196,7 +190,6 @@ const Page = () => {
               form.setFieldValue("dateLearned", date?.toISOString() || "")
             }
             value={new Date(form.values.dateLearned)}
-            clearable
           />
 
           <TimeInput

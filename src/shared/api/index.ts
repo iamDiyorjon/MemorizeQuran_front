@@ -1,4 +1,11 @@
-import { Issue, PostIssue, Surah, User } from "../models";
+import {
+  Issue,
+  PostIssue,
+  RepetitionPlan,
+  RepetitionPlanDay,
+  Surah,
+  User,
+} from "../models";
 import { api } from "./_base";
 
 //* User Actions
@@ -34,5 +41,25 @@ export const getAllIssues = async (userId: number): Promise<Issue[]> => {
 };
 export const createIssue = async (body: PostIssue): Promise<void> => {
   const response = await api.post("/Issues/CreateIssue", body);
+  return response.data;
+};
+
+export const getRepetitionPlanForMonth = async (
+  userId: number,
+  date: string
+): Promise<RepetitionPlanDay[]> => {
+  const response = await api.get(
+    `/RepetitionPlans/GetRepetitionPlanForMonth?userId=${userId}&date=${date}`
+  );
+  return response.data;
+};
+
+export const getRepetitionPlanForDay = async (
+  userId: number,
+  date: string
+): Promise<RepetitionPlan[]> => {
+  const response = await api.get(
+    `/RepetitionPlans/GetRepetitionPlanForDate?userId=${userId}&date=${date}`
+  );
   return response.data;
 };

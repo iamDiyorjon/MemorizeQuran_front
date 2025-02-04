@@ -28,7 +28,7 @@ const Page = () => {
     }
   }, [user]);
   return (
-    <Flex h="calc(100vh - 122px)" direction="column">
+    <Flex h="100%" direction="column">
       <Box h="70%" pos="relative" style={{ overflow: "hidden" }}>
         <Flex
           direction="column"

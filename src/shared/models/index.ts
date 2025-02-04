@@ -33,3 +33,25 @@ export interface PostIssue {
   repetitionCount: number;
   userId: number;
 }
+
+export interface RepetitionPlanDay {
+  day: number;
+  dayOfWeek: number;
+  dayOfWeekDisplayName: string;
+  hasPlan: boolean;
+  today: string;
+}
+export interface RepetitionPlan {
+  id: number;
+  userId: number;
+  issuesId: number;
+  durationTime: string;
+  surahId: number;
+  surahName: string;
+  from: number;
+  to: number;
+  repetitionCount: number;
+  repetitionDay: number;
+  isCompleted: boolean;
+  remindMe: boolean;
+}

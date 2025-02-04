@@ -1,0 +1,11 @@
+.selected{
+    border: 1px solid var(--mantine-primary-color-filled);
+    background-color: var(--mantine-color-white);
+    border-radius: 10px;
+    color: var(--mantine-primary-color-filled);
+}
+.hasPlan {
+    background-color: var(--mantine-primary-color-filled);
+    border-radius: 10px;
+    color: var(--mantine-color-white);
+}

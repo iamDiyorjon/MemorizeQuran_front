@@ -4,7 +4,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 export const FormLayout = () => {
   const navigate = useNavigate();
   return (
-    <>
+    <Flex direction="column" w="100%" h="calc(100vh - 70px)">
       <AppShell.Header>
         <Flex px={10} w="100%" h="100%" align="center">
           <ActionIcon onClick={() => navigate("/")} variant="transparent">
@@ -16,6 +16,6 @@ export const FormLayout = () => {
         </Flex>
       </AppShell.Header>
       <Outlet />
-    </>
+    </Flex>
   );
 };

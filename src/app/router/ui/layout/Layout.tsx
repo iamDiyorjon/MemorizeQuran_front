@@ -42,7 +42,19 @@ export const Layout = () => {
   };
   return (
     <AppShell footer={{ height: 70 }} header={{ height: 50 }} padding="md">
-      <AppShell.Main pt={0} pl={0} pr={0} bg="#F6FAFC">
+      <AppShell.Main
+        style={{ overflow: "hidden" }}
+        pt={0}
+        pl={0}
+        pr={0}
+        pb={70}
+        bg="#F6FAFC"
+        styles={{
+          main: {
+            overflow: "hidden",
+          },
+        }}
+      >
         <Outlet />
       </AppShell.Main>
       <AppShell.Footer p={0} px={20}>
