@@ -7,6 +7,7 @@ import { FormLayout } from "./ui/layout/FormLayout";
 import { useUnit } from "effector-react";
 import { appInitialized } from "@/shared/state";
 import { useEffect } from "react";
+import { Alert, Flex } from "@mantine/core";
 
 export const Router = () => {
   return (
@@ -18,7 +19,22 @@ export const Router = () => {
             <Route path={Tasks.route} element={<Tasks.component />} />
             <Route path={Learn.route} element={<Learn.component />} />
           </Route>
-          <Route path="*" element={<h1>404</h1>} />
+          <Route
+            path="*"
+            element={
+              <Flex
+                w="100%"
+                h="calc(100vh - 90px)"
+                align="center"
+                justify="center"
+              >
+                <Alert
+                  title="404: Page is under development."
+                  variant="light"
+                />
+              </Flex>
+            }
+          />
         </Route>
       </Route>
     </Routes>

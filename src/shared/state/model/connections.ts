@@ -45,7 +45,7 @@ sample({
 });
 
 sample({
-  clock: [getUserFx.doneData, postUserFx.doneData],
+  clock: [postUserFx.doneData],
   filter: (c) => c.isExisting,
   fn: (c) => c.userId,
   target: getAllIssuesFx,

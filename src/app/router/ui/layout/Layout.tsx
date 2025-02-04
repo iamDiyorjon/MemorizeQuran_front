@@ -1,35 +1,35 @@
+import { Icon } from "@/shared/ui";
 import { AppShell, Button, Flex, rem } from "@mantine/core";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-// import { BookOpenText, Calendar, GraduationCap, House } from "lucide-react";
 const navbar = [
   {
     label: "Home",
     link: "/",
-    // icon: <House />,
+    icon: <Icon name="home" />,
     enabled: true,
   },
   {
     label: "Learn",
     link: "/learn",
-    // icon: <GraduationCap />,
+    icon: <Icon name="school" />,
     enabled: true,
   },
   {
     label: "Duas",
     link: "/duas",
-    // icon: <BookOpenText />,
+    icon: <Icon name="menu_book" />,
     enabled: false,
   },
   {
     label: "Khatm",
     link: "/khatm",
-    // icon: <BookOpenText />,
+    icon: <Icon name="menu_book" />,
     enabled: false,
   },
   {
     label: "Tasks",
     link: "/tasks",
-    // icon: <Calendar />,
+    icon: <Icon name="calendar_month" />,
     enabled: true,
   },
 ];
@@ -71,7 +71,7 @@ export const Layout = () => {
                 },
               }}
             >
-              {/* {item.icon} */}
+              {item.icon}
               {item.label}
             </Button>
           ))}

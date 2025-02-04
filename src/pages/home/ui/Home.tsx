@@ -1,26 +1,16 @@
 import heroImg from "@assets/image 2.png";
-import {
-  Box,
-  Card,
-  Checkbox,
-  Flex,
-  Image,
-  ScrollArea,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Box, Card, Flex, Image, ScrollArea, Text, Title } from "@mantine/core";
 import { Carousel } from "@mantine/carousel";
-// import { AlarmClock, MessageCircle, Octagon, StarsIcon } from "lucide-react";
 import { useUnit } from "effector-react";
 import {
   $allIssues,
   $allSurahs,
   $currentUser,
   $isLoading,
-  pageMounted,
 } from "@/shared/state";
+import { Icon } from "@/shared/ui";
 import { useEffect } from "react";
-import WebApp from "@twa-dev/sdk";
+import { pageMounted } from "../model";
 
 const Page = () => {
   const [user, allIssues, allSurahs, isLoading] = useUnit([
@@ -29,6 +19,14 @@ const Page = () => {
     $allSurahs,
     $isLoading,
   ]);
+
+  const [mountPage] = useUnit([pageMounted]);
+
+  useEffect(() => {
+    if (user) {
+      mountPage(user.userId);
+    }
+  }, [user]);
   return (
     <Flex h="calc(100vh - 122px)" direction="column">
       <Box h="70%" pos="relative" style={{ overflow: "hidden" }}>
@@ -49,7 +47,6 @@ const Page = () => {
               Easy Memorize Quran
             </Title>
             {user?.telegramId}
-            {WebApp.initDataUnsafe?.user?.id}
             <Carousel
               slideSize="90%"
               align="start"
@@ -81,7 +78,7 @@ const Page = () => {
                 align="center"
                 justify="center"
               >
-                {/* <AlarmClock size={32} color="#E7BFEE" /> */}
+                <Icon name="alarm" color="#E7BFEE" />
                 <Text c="dimmed" size="sm" fw={500}>
                   Reminder
                 </Text>
@@ -94,7 +91,7 @@ const Page = () => {
                 align="center"
                 justify="center"
               >
-                {/* <MessageCircle size={32} color="#B7D5F3" /> */}
+                <Icon name="message" color="#B7D5F3" />
                 <Text c="dimmed" size="sm" fw={500}>
                   Q&A
                 </Text>
@@ -107,7 +104,7 @@ const Page = () => {
                 align="center"
                 justify="center"
               >
-                {/* <StarsIcon size={32} color="var(--mantine-color-green-2)" /> */}
+                <Icon name="book" color="#F3B9B9" />
                 <Text c="dimmed" size="sm" fw={500}>
                   Zikr
                 </Text>
