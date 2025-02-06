@@ -8,7 +8,7 @@ import {
   $currentUser,
   $isLoading,
 } from "@/shared/state";
-import { Icon } from "@/shared/ui";
+import { Icon, StarBadge } from "@/shared/ui";
 import { useEffect } from "react";
 import { pageMounted } from "../model";
 
@@ -126,10 +126,13 @@ const Page = () => {
           ) : (
             <Flex direction="column" gap={10}>
               {allIssues.map((issue) => (
-                <Card key={issue.id} p={10} mb={10}>
+                <Card shadow="md" key={issue.id} p={10}>
                   <Flex align="center" justify="space-between">
                     <Flex gap={10} align="center">
-                      {/* <Octagon size={28} color="var(--mantine-color-teal-6)" /> */}
+                      <StarBadge
+                        size={36}
+                        number={allSurahs[issue.surahId - 1]?.id}
+                      />
                       <Flex direction="column">
                         <Text>{allSurahs[issue.surahId - 1]?.name}</Text>
                         <Text c="dimmed" size="xs">

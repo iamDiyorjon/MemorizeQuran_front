@@ -192,7 +192,7 @@ const Page = () => {
             value={new Date(form.values.dateLearned)}
           />
 
-          <TimeInput
+          {/* <TimeInput
             ref={ref}
             label="Learning time"
             placeholder="Pick time"
@@ -201,7 +201,7 @@ const Page = () => {
             //   const minutes = (date?.getHours() || 0) * 60 + (date?.getMinutes() || 0);
             //   form.setFieldValue("durationMinutes", minutes);
             // }}
-          />
+          /> */}
 
           <Checkbox
             label="Remind me"

@@ -70,7 +70,7 @@ export const Layout = () => {
               c={
                 location.pathname === item.link
                   ? "var(--mantine-primary-color-filled)"
-                  : "gray"
+                  : "#2B3032"
               }
               styles={{
                 label: {

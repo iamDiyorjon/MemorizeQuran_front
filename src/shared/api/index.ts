@@ -63,3 +63,10 @@ export const getRepetitionPlanForDay = async (
   );
   return response.data;
 };
+
+export const changePlanStatus = async (id: number): Promise<void> => {
+  const response = await api.post(
+    `/RepetitionPlans/ChangeIsCompleted?repetitionPlanId=${id}`
+  );
+  return response.data;
+};

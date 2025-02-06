@@ -1,13 +1,14 @@
 import {
   Box,
+  Button,
   Card,
   Checkbox,
   Divider,
   Flex,
+  SimpleGrid,
   Skeleton,
   Text,
 } from "@mantine/core";
-import { DatePicker } from "@mantine/dates";
 import { useUnit } from "effector-react";
 import {
   $isLoadingPlanForDay,
@@ -16,39 +17,101 @@ import {
   $planForMonth,
   pageMounted,
   plansForDayFetched,
+  plansForMonthFetched,
+  planStatusChanged,
 } from "../model";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { StarBadge } from "@/shared/ui";
+import { $currentUser } from "@/shared/state";
 import "./style.css";
-import { Icon } from "@/shared/ui";
+import { DatePicker, DayProps } from "@mantine/dates";
 const Page = () => {
-  const [mountPage, fetchPlansForDay] = useUnit([
-    pageMounted,
-    plansForDayFetched,
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(
+    new Date()
+  );
+  const [mountPage, fetchPlansForDay, fetchPlansForMonth, changePlanStatus] =
+    useUnit([
+      pageMounted,
+      plansForDayFetched,
+      plansForMonthFetched,
+      planStatusChanged,
+    ]);
+  const [plans, plansForDay, currentUser] = useUnit([
+    $planForMonth,
+    $planForDay,
+    $currentUser,
   ]);
-  const [plans, plansForDay] = useUnit([$planForMonth, $planForDay]);
   const [isLoadingPlanForMonth, isLoadingPlanForDay] = useUnit([
     $isLoadingPlanForMonth,
     $isLoadingPlanForDay,
   ]);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   useEffect(() => {
+    if (!currentUser) return;
     mountPage({
-      userId: 2,
+      userId: currentUser?.userId,
       date: new Date().toDateString(),
     });
-  }, []);
-
-  const handleDayClick = (e, date: Date) => {
+  }, [currentUser]);
+  const handleDayClick = (date: Date) => {
     setSelectedDate(date);
     fetchPlansForDay({
-      userId: 2,
+      userId: currentUser?.userId,
       date: date.toDateString(),
     });
   };
 
-  if (isLoadingPlanForMonth) {
-    return <Skeleton h="100%">Loading...</Skeleton>;
-  }
+  const handleDateChange = (date: Date) => {
+    if (!date) return;
+    setSelectedDate(date);
+    fetchPlansForMonth({
+      userId: currentUser?.userId,
+      date: new Date(date).toDateString(),
+    });
+  };
+
+  const handleStatus = (id: number) => {
+    if (!selectedDate) return;
+    changePlanStatus({
+      date: selectedDate.toDateString(),
+      planId: id,
+    });
+  };
+  const generateDayProps = useCallback(
+    (date: Date) => {
+      let hasPlan = plans.find(
+        (plan) =>
+          new Date(date).toDateString() === new Date(plan.today).toDateString()
+      )?.hasPlan;
+      return {
+        date: date,
+        outside: false,
+        selected: false,
+        renderDay(date) {
+          return (
+            <Flex
+              justify="center"
+              align="center"
+              w="100%"
+              h="100%"
+              onClick={() => handleDayClick(date)}
+              classNames={{
+                root:
+                  selectedDate?.toDateString() === date.toDateString()
+                    ? "hasPlan"
+                    : hasPlan
+                    ? "selected"
+                    : "",
+              }}
+            >
+              {date.getDate()}
+            </Flex>
+          );
+        },
+      } as DayProps;
+    },
+    [plans, selectedDate]
+  );
+
   return (
     <Flex
       align="center"
@@ -59,86 +122,95 @@ const Page = () => {
       bg="#F6FAFC"
       h="calc(100vh - 90px)"
     >
-      <Box h="50%">
-        <DatePicker
-          // value={new Date()}
-          hideOutsideDates
-          renderDay={(date) => {
-            // if date is today, return a circle with the date
-            if (date.getDate() === selectedDate?.getDate()) {
-              return (
-                <Flex
-                  align="center"
-                  justify="center"
-                  w="100%"
-                  h="100%"
-                  className="selected"
-                >
-                  {date.getDate()}
-                </Flex>
-              );
-            } else {
-              return (
-                plans.find((plan) => plan.day === date.getDate())?.hasPlan && (
-                  <Flex
-                    align="center"
-                    justify="center"
-                    w="100%"
-                    h="100%"
-                    className="hasPlan"
-                  >
-                    {date.getDate()}
-                  </Flex>
-                )
-              );
-            }
-          }}
-          styles={{
-            day: {
-              borderRadius: "10px",
-            },
-          }}
-          __onDayClick={handleDayClick}
-          size="md"
-        />
-      </Box>
-      <Divider mb={10} w="80%" label="Plans for today" labelPosition="center" />
-      <Flex direction="column" gap={10} px={20} w="100%" h="50%">
-        {isLoadingPlanForDay ? (
-          <Box>Loading...</Box>
-        ) : (
-          plansForDay.map((plan) => (
-            <Card
-              bg={
-                !plan.isCompleted ? "var(--mantine-primary-color-filled)" : ""
-              }
-              py={5}
-              shadow="xs"
-              radius="md"
-              key={plan.id}
+      <Box p={10} mih="50%" h="50%">
+        {isLoadingPlanForMonth ? (
+          <Flex direction="column" w="100%" gap={5}>
+            <Flex gap={10} justify="space-between">
+              <Skeleton height={40} width={40} />
+              <Skeleton height={40} width="75%" />
+              <Skeleton height={40} width={40} />
+            </Flex>
+            <SimpleGrid
+              verticalSpacing="3px"
+              spacing="3px"
+              cols={7}
+              w="100%"
+              h="100%"
             >
-              <Flex align="center" gap={10}>
-                <Icon name="book" size={20} />
-                <Flex direction="column">
-                  <Text fw="500">
-                    {plan.surahName ? plan.surahName : "By Pages"} {plan.from} -{" "}
-                    {plan.to}
-                  </Text>
-                  <Text fz={12}>repeat after 15 minutes</Text>
-                </Flex>
-                <Checkbox
-                  color="var(--mantine-primary-color-filled)"
-                  variant="filled"
-                  ml="auto"
-                  size="sm"
-                />
-              </Flex>
-            </Card>
-          ))
+              {Array.from({ length: 7 }).map((_, index) => (
+                <Skeleton key={index} height={33} width={42} />
+              ))}
+            </SimpleGrid>
+            <SimpleGrid
+              verticalSpacing="3px"
+              spacing="3px"
+              cols={7}
+              w="100%"
+              h="100%"
+            >
+              {Array.from({ length: 6 }).map((_, index) =>
+                Array.from({ length: 7 }).map((_, index) => (
+                  <Skeleton key={index} height={42} width={42} />
+                ))
+              )}
+            </SimpleGrid>
+          </Flex>
+        ) : (
+          <DatePicker
+            date={selectedDate}
+            onDateChange={handleDateChange}
+            minDate={new Date("2024-01-01")}
+            weekdayFormat={"ddd"}
+            getDayProps={generateDayProps}
+            size="md"
+          />
         )}
-        {plansForDay?.length <= 0 && (
+      </Box>
+      <Divider
+        mb={10}
+        w="80%"
+        label={`
+        Plan for ${selectedDate?.toDateString()}
+        `}
+        labelPosition="center"
+      />
+      <Flex direction="column" gap={10} px={20} w="100%" mih="40%" h="50%">
+        {isLoadingPlanForDay
+          ? Array.from({ length: 8 }).map((_, index) => (
+              <Skeleton key={index} h={120} width="100%" />
+            ))
+          : plansForDay.map((plan) => (
+              <Card
+                className="plan-for-day__card"
+                py={5}
+                px={10}
+                shadow="xs"
+                radius="md"
+                key={plan.id}
+              >
+                <Flex align="center" gap={10}>
+                  <StarBadge color="white" size={36} />
+                  <Flex direction="column">
+                    <Text fw="500">
+                      {plan.surahName ? plan.surahName : "By Pages"} {plan.from}{" "}
+                      - {plan.to}
+                    </Text>
+                    <Text fz={12}>repeat after 15 minutes</Text>
+                  </Flex>
+                  <Checkbox
+                    checked={plan.isCompleted}
+                    onChange={() => handleStatus(plan.id)}
+                    color="var(--mantine-primary-color-filled)"
+                    variant="filled"
+                    ml="auto"
+                    size="sm"
+                  />
+                </Flex>
+              </Card>
+            ))}
+        {plansForDay?.length <= 0 && !isLoadingPlanForDay && (
           <Flex align="center" justify="center" w="100%" h="100%">
-            No plans for today
+            No plans for {selectedDate?.toDateString()}
           </Flex>
         )}
       </Flex>
