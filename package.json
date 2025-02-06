@@ -15,6 +15,7 @@
     "@mantine/dates": "^7.16.2",
     "@mantine/form": "^7.16.2",
     "@mantine/hooks": "^7.16.2",
+    "@mantine/notifications": "^7.16.2",
     "@twa-dev/sdk": "^8.0.1",
     "@vitejs/plugin-basic-ssl": "^1.2.0",
     "axios": "^1.7.9",

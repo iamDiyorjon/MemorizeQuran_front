@@ -8,11 +8,12 @@ import {
 } from "./effects";
 import { getTelegramId } from "./lib";
 import { $allIssues, $allSurahs, $currentUser } from "./stores";
+import WebApp from "@twa-dev/sdk";
 
 //* App Initialization
 sample({
   clock: appInitialized,
-  fn: () => getTelegramId(),
+  fn: () => WebApp.initDataUnsafe?.user?.id,
   target: getUserFx,
 });
 sample({

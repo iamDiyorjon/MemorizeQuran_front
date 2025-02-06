@@ -11,7 +11,7 @@ import { Icon, StarBadge } from "@/shared/ui";
 import { useEffect } from "react";
 import { pageMounted } from "../model";
 import heroImg from "../../../assets/image-2.png";
-
+import WebApp from "@twa-dev/sdk";
 const Page = () => {
   const [user, allIssues, allSurahs, isLoading] = useUnit([
     $currentUser,
@@ -50,7 +50,7 @@ const Page = () => {
         >
           <Flex direction="column" mt="auto">
             <Title order={2} mb={40}>
-              Easy Memorize Quran
+              Easy Memorize Quran {WebApp.initDataUnsafe?.user?.id}
             </Title>
             {user?.telegramId}
             <Carousel
