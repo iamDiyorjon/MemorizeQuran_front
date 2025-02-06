@@ -1,4 +1,4 @@
-import heroImg from "@assets/image 2.png";
+import heroImg from "@assets/image-2.png";
 import { Box, Card, Flex, Image, ScrollArea, Text, Title } from "@mantine/core";
 import { Carousel } from "@mantine/carousel";
 import { useUnit } from "effector-react";
