@@ -1,7 +1,7 @@
 import { PostIssue } from "@/shared/models";
 import { $allSurahs, $currentUser } from "@/shared/state";
 import { ActionIcon, Button, Checkbox, Flex, Select } from "@mantine/core";
-import { DateInput, TimeInput } from "@mantine/dates";
+import { DateInput } from "@mantine/dates";
 import { useUnit } from "effector-react";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "@mantine/form";
@@ -48,6 +48,7 @@ const Page = () => {
     validate: {
       learnTypeId: (value) => (value > 0 ? null : "Select learning type"),
       surahId: (value, values) =>
+        // @ts-ignore
         values.learnTypeId === "1" && value <= 0 ? "Select surah" : null,
       from: (value) => (value <= 0 ? "Select from" : null),
       to: (value) => (value <= 0 ? "Select to" : null),
@@ -93,6 +94,7 @@ const Page = () => {
 
   // Reset related fields when learning type changes
   useEffect(() => {
+    //@ts-ignore
     if (form.values.learnTypeId === "2") {
       form.setFieldValue("surahId", null);
       form.setFieldValue("from", 0);
@@ -116,16 +118,6 @@ const Page = () => {
       userId: currentUser ? currentUser.userId : 0,
     });
   };
-
-  const pickerControl = (
-    <ActionIcon
-      variant="subtle"
-      color="gray"
-      onClick={() => ref.current?.showPicker()}
-    >
-      <Icon name="alarm" size={18} />
-    </ActionIcon>
-  );
 
   return (
     <Flex w="100%" h="100%" direction="column" justify="center" align="center">

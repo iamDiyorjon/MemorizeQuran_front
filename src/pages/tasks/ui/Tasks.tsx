@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Card,
   Checkbox,
   Divider,
@@ -148,7 +147,7 @@ const Page = () => {
               w="100%"
               h="100%"
             >
-              {Array.from({ length: 6 }).map((_, index) =>
+              {Array.from({ length: 6 }).map((_) =>
                 Array.from({ length: 7 }).map((_, index) => (
                   <Skeleton key={index} height={42} width={42} />
                 ))
