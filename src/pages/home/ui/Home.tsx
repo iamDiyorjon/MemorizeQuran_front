@@ -1,4 +1,3 @@
-import heroImg from "@assets/image-2.png";
 import { Box, Card, Flex, Image, ScrollArea, Text, Title } from "@mantine/core";
 import { Carousel } from "@mantine/carousel";
 import { useUnit } from "effector-react";
@@ -11,6 +10,7 @@ import {
 import { Icon, StarBadge } from "@/shared/ui";
 import { useEffect } from "react";
 import { pageMounted } from "../model";
+import heroImg from "../../../assets/image-2.png";
 
 const Page = () => {
   const [user, allIssues, allSurahs, isLoading] = useUnit([
