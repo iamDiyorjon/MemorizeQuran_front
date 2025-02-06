@@ -28,8 +28,14 @@ const Page = () => {
     }
   }, [user]);
   return (
-    <Flex h="100%" direction="column">
-      <Box h="70%" pos="relative" style={{ overflow: "hidden" }}>
+    <Flex
+      h="calc(100vh - 70px)"
+      style={{
+        overflow: "hidden",
+      }}
+      direction="column"
+    >
+      <Box h="45vh" pos="relative" style={{ overflow: "hidden" }}>
         <Flex
           direction="column"
           p={24}
@@ -114,17 +120,17 @@ const Page = () => {
         </Flex>
         <Image src={heroImg} />
       </Box>
-      <Box p={24} py={0} h="55%">
+      <Box p={20} py={0} h="45vh">
         <Title my={5} order={5}>
           All Tasks
         </Title>
-        <ScrollArea type="never" h="100%">
+        <ScrollArea type="never" h="calc(100% - 40px)">
           {isLoading ? (
             <Flex h="100%" justify="center" align="center">
               <Text>Loading...</Text>
             </Flex>
           ) : (
-            <Flex direction="column" gap={10}>
+            <Flex p={10} px={4} direction="column" gap={10}>
               {allIssues.map((issue) => (
                 <Card shadow="md" key={issue.id} p={10}>
                   <Flex align="center" justify="space-between">

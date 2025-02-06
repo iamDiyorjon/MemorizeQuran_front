@@ -12,7 +12,7 @@ import { $allIssues, $allSurahs, $currentUser } from "./stores";
 //* App Initialization
 sample({
   clock: appInitialized,
-  fn: () => getTelegramId(),
+  fn: () => 970956519,
   target: getUserFx,
 });
 sample({
