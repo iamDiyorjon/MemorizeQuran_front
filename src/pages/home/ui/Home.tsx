@@ -50,9 +50,8 @@ const Page = () => {
         >
           <Flex direction="column" mt="auto">
             <Title order={2} mb={40}>
-              Easy Memorize Quran {WebApp.initDataUnsafe?.user?.id}
+              Easy Memorize Quran
             </Title>
-            {user?.telegramId}
             <Carousel
               slideSize="90%"
               align="start"
