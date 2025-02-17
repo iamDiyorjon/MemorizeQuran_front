@@ -13,18 +13,24 @@ import WebApp from "@twa-dev/sdk";
 //* App Initialization
 sample({
   clock: appInitialized,
-  fn: () => WebApp.initDataUnsafe?.user?.id,
+  fn: () => getTelegramId(),
   target: getUserFx,
 });
 sample({
   clock: getUserFx.doneData,
+  filter: (user) => user.isExisting,
   target: $currentUser,
 });
 
 //* If user not found, register him
 sample({
   clock: getUserFx.done,
-  filter: (user) => !user.result.isExisting,
+  filter: (user) => {
+    if (!user.result.isExisting && getTelegramId()) {
+      return true;
+    }
+    return false;
+  },
   fn: (clock) => {
     return { telegramId: clock.params, fullName: "New User" };
   },

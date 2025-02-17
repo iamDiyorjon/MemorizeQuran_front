@@ -27,6 +27,8 @@ const Page = () => {
       mountPage(user.userId);
     }
   }, [user]);
+
+  console.log(user);
   return (
     <Flex
       h="calc(100vh - 70px)"
