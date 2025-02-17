@@ -1,11 +1,22 @@
-import { Outlet, Route, Routes } from "react-router-dom";
+import {
+  Outlet,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { Home } from "@/pages/home";
 import { Tasks } from "@/pages/tasks";
 import { Learn } from "@/pages/learn";
+import { NotRegisteredPage } from "@/pages/not-registered";
 import { Layout } from "./ui/layout";
 import { FormLayout } from "./ui/layout/FormLayout";
 import { useUnit } from "effector-react";
-import { appInitialized } from "@/shared/state";
+import {
+  appInitialized,
+  locationAttached,
+  navigateAttached,
+} from "@/shared/state";
 import { useEffect } from "react";
 import { Alert, Flex } from "@mantine/core";
 
@@ -13,6 +24,10 @@ export const Router = () => {
   return (
     <Routes>
       <Route path="" element={<InitApp />}>
+        <Route
+          path={NotRegisteredPage.route}
+          element={<NotRegisteredPage.component />}
+        />
         <Route element={<Layout />}>
           <Route path={Home.route} element={<Home.component />} />
           <Route element={<FormLayout />}>
@@ -42,9 +57,25 @@ export const Router = () => {
 };
 
 export const InitApp = () => {
-  const [initializeApp] = useUnit([appInitialized]);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const [initializeApp, attachNavigate, attachLocation] = useUnit([
+    appInitialized,
+    navigateAttached,
+    locationAttached,
+  ]);
+  useEffect(() => {
+    attachNavigate(navigate);
+  }, [navigate]);
+
+  useEffect(() => {
+    attachLocation(location);
+  }, [location]);
+
   useEffect(() => {
     initializeApp();
   }, []);
+
   return <Outlet />;
 };

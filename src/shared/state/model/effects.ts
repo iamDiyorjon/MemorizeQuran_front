@@ -1,5 +1,35 @@
 import { getAllIssues, getAllSurahs, getUser, postUser } from "@/shared/api";
-import { createEffect } from "effector";
+import { attach, createEffect } from "effector";
+import { $location, $navigate } from "./stores";
+import { NavigateFxPayload, NavigateParams } from "./types";
+import { resolveUrl } from "./lib";
+export const navigateFx = attach({
+  source: { navigate: $navigate, location: $location },
+  mapParams: (params: NavigateParams, { navigate, location }) => ({
+    ...params,
+    navigate,
+    location,
+  }),
+  effect: createEffect(
+    ({ navigate, location, to, ...options }: NavigateFxPayload) => {
+      if (!navigate || !location) return;
+      console.log("navigating", to);
+      if (typeof to === "string") {
+        if (to === "" || to.startsWith("/")) {
+          return navigate(to, options);
+        }
+
+        if (to.includes("..")) {
+          return navigate(resolveUrl(location.pathname, to), options);
+        }
+
+        return navigate(`${location.pathname}/${to}`, options);
+      }
+
+      return navigate(to, options);
+    }
+  ),
+});
 
 export const getUserFx = createEffect((id: number) => {
   return getUser(id);

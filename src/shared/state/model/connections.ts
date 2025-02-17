@@ -1,22 +1,49 @@
 import { sample } from "effector";
-import { appInitialized, userNotFound } from "./events";
+import {
+  appInitialized,
+  locationAttached,
+  navigateAttached,
+  navigated,
+  userNotFound,
+} from "./events";
 import {
   getAllIssuesFx,
   getAllSurahsFx,
   getUserFx,
+  navigateFx,
   postUserFx,
 } from "./effects";
 import { getTelegramId } from "./lib";
-import { $allIssues, $allSurahs, $currentUser } from "./stores";
-import WebApp from "@twa-dev/sdk";
+import {
+  $allIssues,
+  $allSurahs,
+  $currentUser,
+  $location,
+  $navigate,
+} from "./stores";
+import { NavigateParams } from "./types";
 
+//* Navigation
+sample({
+  clock: navigateAttached,
+  target: $navigate,
+});
+sample({
+  clock: navigated,
+  fn: (payload): NavigateParams =>
+    typeof payload === "string" ? { to: payload } : payload,
+  target: navigateFx,
+});
+sample({
+  clock: locationAttached,
+  target: $location,
+});
 //* App Initialization
 sample({
   clock: appInitialized,
   filter: () => {
     const telegramId = getTelegramId();
     if (!telegramId) {
-      console.log("Telegram ID not found");
       return false;
     }
     return true;
@@ -24,6 +51,22 @@ sample({
   fn: () => getTelegramId(),
   target: getUserFx,
 });
+
+//* If user not found navigate to not registered page
+sample({
+  clock: appInitialized,
+  filter: () => {
+    const id = getTelegramId();
+    if (!id) {
+      console.log("Telegram ID not found");
+      return true;
+    }
+    return false;
+  },
+  fn: () => "/notRegistered",
+  target: navigated,
+});
+
 sample({
   clock: getUserFx.doneData,
   filter: (user) => user.isExisting,
@@ -31,21 +74,6 @@ sample({
 });
 
 //* If user not found, register him
-sample({
-  clock: getUserFx.done,
-  filter: (user) => {
-    if (!user.result.isExisting) {
-      console.log("User not found, registering");
-      return true;
-    }
-    console.log("User found, skipping registration");
-    return false;
-  },
-  fn: (clock) => {
-    return { telegramId: clock.params, fullName: "New User" };
-  },
-  target: userNotFound,
-});
 sample({
   clock: userNotFound,
   target: postUserFx,
@@ -58,6 +86,18 @@ sample({
 });
 
 sample({
+  clock: postUserFx.doneData,
+  filter: ({ id }) => {
+    if (!id) {
+      return false;
+    }
+    return true;
+  },
+  fn: ({ id }) => "/",
+  target: navigated,
+});
+
+sample({
   clock: appInitialized,
   target: getAllSurahsFx,
 });
@@ -66,13 +106,6 @@ sample({
   clock: getAllSurahsFx.doneData,
   target: $allSurahs,
 });
-
-// sample({
-//   clock: postUserFx.doneData,
-//   filter: (c) => c.isExisting,
-//   fn: (c) => c.userId,
-//   target: getAllIssuesFx,
-// });
 
 sample({
   clock: getAllIssuesFx.doneData,

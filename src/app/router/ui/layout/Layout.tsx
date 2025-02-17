@@ -39,23 +39,11 @@ const navbar = [
 export const Layout = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [user] = useUnit([$currentUser]);
   const handleRouting = (route: string) => {
     navigate(route);
   };
-
-  console.log(user);
   return (
     <AppShell footer={{ height: 70 }} header={{ height: 50 }} padding="md">
-      <LoadingOverlay
-        visible={!user}
-        loaderProps={{
-          type: "dots",
-        }}
-        overlayProps={{
-          blur: 10,
-        }}
-      />
       <AppShell.Main
         style={{ overflow: "hidden" }}
         pt={0}
