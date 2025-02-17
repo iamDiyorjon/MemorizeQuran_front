@@ -51,12 +51,12 @@ sample({
   target: $allSurahs,
 });
 
-sample({
-  clock: [postUserFx.doneData],
-  filter: (c) => c.isExisting,
-  fn: (c) => c.userId,
-  target: getAllIssuesFx,
-});
+// sample({
+//   clock: postUserFx.doneData,
+//   filter: (c) => c.isExisting,
+//   fn: (c) => c.userId,
+//   target: getAllIssuesFx,
+// });
 
 sample({
   clock: getAllIssuesFx.doneData,
