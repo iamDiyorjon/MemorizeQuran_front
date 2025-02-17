@@ -18,7 +18,7 @@ export const getUser = async (telegramId: number): Promise<User> => {
   return response.data.result;
 };
 
-export const postUser = async (body: any): Promise<User> => {
+export const postUser = async (body: any): Promise<{ id: number }> => {
   const response = await api.post("/User", {
     telegramId: body.telegramId,
     fullName: body.fullName,

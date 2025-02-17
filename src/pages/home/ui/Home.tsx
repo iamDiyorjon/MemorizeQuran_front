@@ -28,7 +28,6 @@ const Page = () => {
     }
   }, [user]);
 
-  console.log(user);
   return (
     <Flex
       h="calc(100vh - 70px)"

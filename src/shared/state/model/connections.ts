@@ -1,5 +1,5 @@
 import { sample } from "effector";
-import { appInitialized } from "./events";
+import { appInitialized, userNotFound } from "./events";
 import {
   getAllIssuesFx,
   getAllSurahsFx,
@@ -13,6 +13,14 @@ import WebApp from "@twa-dev/sdk";
 //* App Initialization
 sample({
   clock: appInitialized,
+  filter: () => {
+    const telegramId = getTelegramId();
+    if (!telegramId) {
+      console.log("Telegram ID not found");
+      return false;
+    }
+    return true;
+  },
   fn: () => getTelegramId(),
   target: getUserFx,
 });
@@ -26,19 +34,27 @@ sample({
 sample({
   clock: getUserFx.done,
   filter: (user) => {
-    if (!user.result.isExisting && getTelegramId()) {
+    if (!user.result.isExisting) {
+      console.log("User not found, registering");
       return true;
     }
+    console.log("User found, skipping registration");
     return false;
   },
   fn: (clock) => {
     return { telegramId: clock.params, fullName: "New User" };
   },
-  target: postUserFx,
+  target: userNotFound,
 });
 sample({
+  clock: userNotFound,
+  target: postUserFx,
+});
+
+sample({
   clock: postUserFx.doneData,
-  target: $currentUser,
+  fn: ({ id }) => id,
+  target: getUserFx,
 });
 
 sample({
